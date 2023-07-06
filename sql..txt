@@ -1,0 +1,276 @@
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases
+    -> ;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+6 rows in set (0.01 sec)
+
+mysql> create Database newSql;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| newsql             |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+7 rows in set (0.00 sec)
+
+mysql> use newsql;
+Database changed
+mysql> CREATE TABLE Customers (
+    ->     id INT PRIMARY KEY,
+    ->     name VARCHAR(100),
+    ->     email VARCHAR(100),
+    ->     address VARCHAR(255),
+    ->     phone_number VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> desc Customers;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| id           | int          | NO   | PRI | NULL    |       |
+| name         | varchar(100) | YES  |     | NULL    |       |
+| email        | varchar(100) | YES  |     | NULL    |       |
+| address      | varchar(255) | YES  |     | NULL    |       |
+| phone_number | varchar(50)  | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> INSERT INTO Customers (name, email, phone, address)
+    -> VALUES ('John Doe', 'johndoe@example.com', '1234567890', '123 Main Street');
+ERROR 1054 (42S22): Unknown column 'phone' in 'field list'
+mysql> INSERT INTO Customers (name, email, phone, address)
+    ->
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> INSERT INTO Customers (name, email, phone_number, address)
+    -> VALUES ('John Doe', 'johndoe@example.com', '1234567890', '123 Main Street');
+ERROR 1364 (HY000): Field 'id' doesn't have a default value
+mysql> INSERT INTO Customers (id,name, email, phone, address)
+    -> VALUES (1,'John Doe', 'johndoe@example.com', '1234567890', '123 Main Street');
+ERROR 1054 (42S22): Unknown column 'phone' in 'field list'
+mysql> INSERT INTO Customers (id,name, email, phone_number, address)
+    -> VALUES (1,'John Doe', 'johndoe@example.com', '1234567890', '123 Main Street');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO Customers (id,name, email, phone, address)
+    -> VALUES ('John Doe', 'johndoe@example.com', '1234567890', '123 Main Street');
+ERROR 1054 (42S22): Unknown column 'phone' in 'field list'
+mysql> INSERT INTO Customers (id,name, email, phone_number, address)
+    -> VALUES (2,'John Doe', 'johndoe@example.com', '1234567890', '123 Main Street'),
+    ->  (3,'John Doe', 'johndoe@example.com', '1234567890', '123 Main Street'),
+    ->  (4,'John Doe', 'johndoe@example.com', '1234567890', '123 Main Street'),
+    ->  (5,'John Doe', 'johndoe@example.com', '1234567890', '123 Main Street')
+    ->  ;
+Query OK, 4 rows affected (0.00 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from Customers;
++----+----------+---------------------+-----------------+--------------+
+| id | name     | email               | address         | phone_number |
++----+----------+---------------------+-----------------+--------------+
+|  1 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
+|  2 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
+|  3 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
+|  4 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
+|  5 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
++----+----------+---------------------+-----------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT name, email
+    -> FROM Customers;
++----------+---------------------+
+| name     | email               |
++----------+---------------------+
+| John Doe | johndoe@example.com |
+| John Doe | johndoe@example.com |
+| John Doe | johndoe@example.com |
+| John Doe | johndoe@example.com |
+| John Doe | johndoe@example.com |
++----------+---------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT name , email, phone_number
+    -> FROM Customers;
++----------+---------------------+--------------+
+| name     | email               | phone_number |
++----------+---------------------+--------------+
+| John Doe | johndoe@example.com | 1234567890   |
+| John Doe | johndoe@example.com | 1234567890   |
+| John Doe | johndoe@example.com | 1234567890   |
+| John Doe | johndoe@example.com | 1234567890   |
+| John Doe | johndoe@example.com | 1234567890   |
++----------+---------------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Customers
+    -> WHERE id = 3;
++----+----------+---------------------+-----------------+--------------+
+| id | name     | email               | address         | phone_number |
++----+----------+---------------------+-----------------+--------------+
+|  3 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
++----+----------+---------------------+-----------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Customers;
++----+----------+---------------------+-----------------+--------------+
+| id | name     | email               | address         | phone_number |
++----+----------+---------------------+-----------------+--------------+
+|  1 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
+|  2 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
+|  3 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
+|  4 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
+|  5 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
++----+----------+---------------------+-----------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Customers
+    -> WHERE id = 6;
+Empty set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Customers
+    -> WHERE name LIKE 'A%';
+Empty set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Customers
+    -> ORDER BY name DESC;
++----+----------+---------------------+-----------------+--------------+
+| id | name     | email               | address         | phone_number |
++----+----------+---------------------+-----------------+--------------+
+|  1 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
+|  2 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
+|  3 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
+|  4 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
+|  5 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
++----+----------+---------------------+-----------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> **Problem 8:**
+    ->
+    -> - **Prerequisite**: Understand data updating in SQL / MongoDB
+    -> - **Problem**: Write a query to update the **`address`** of the customer with **`id`** 4.
+    -> UPDATE Customers
+    -> SET address = 'New Address'
+    -> WHERE id = 4;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '**Problem 8:**
+
+- **Prerequisite**: Understand data updating in SQL / MongoDB
+- ' at line 1
+mysql> UPDATE Customers
+    -> SET address = 'New Address'
+    -> WHERE id = 4;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT *
+    -> FROM Customers
+    -> ORDER BY name DESC
+    -> ;
++----+----------+---------------------+-----------------+--------------+
+| id | name     | email               | address         | phone_number |
++----+----------+---------------------+-----------------+--------------+
+|  1 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
+|  2 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
+|  3 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
+|  4 | John Doe | johndoe@example.com | New Address     | 1234567890   |
+|  5 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
++----+----------+---------------------+-----------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Customers
+    -> ORDER BY id ASC
+    -> LIMIT 3;
++----+----------+---------------------+-----------------+--------------+
+| id | name     | email               | address         | phone_number |
++----+----------+---------------------+-----------------+--------------+
+|  1 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
+|  2 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
+|  3 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
++----+----------+---------------------+-----------------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> DELETE FROM Customers
+    -> WHERE id = 2;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT COUNT(*) as count
+    -> FROM Customers;
++-------+
+| count |
++-------+
+|     4 |
++-------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql> SELECT *
+    -> FROM Customers
+    -> ORDER BY id ASC
+    -> OFFSET 2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'OFFSET 2' at line 4
+mysql> SELECT *
+    -> FROM Customers
+    -> ORDER BY id ASC
+    -> OFFSET 2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'OFFSET 2' at line 4
+mysql> SELECT *
+    -> FROM Customers
+    -> ORDER BY id ASC
+    -> LIMIT 18446744073709551615 OFFSET 2;
++----+----------+---------------------+-----------------+--------------+
+| id | name     | email               | address         | phone_number |
++----+----------+---------------------+-----------------+--------------+
+|  4 | John Doe | johndoe@example.com | New Address     | 1234567890   |
+|  5 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |
++----+----------+---------------------+-----------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Customers
+    -> WHERE id > 2 AND name LIKE 'B%';
+Empty set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Customers
+    -> WHERE id < 3 OR name LIKE '%s';
++----+----------+---------------------+-----------------+--------------+
+| id | name     | email               | address         | phone_number |
++----+----------+---------------------+-----------------+--------------+
+|  1 | John Doe | johndoe@example.com | 123 Main Street | 1234567890   |g
++----+----------+---------------------+-----------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Customers
+    -> WHERE phone_number IS NULL;
+Empty set (0.00 sec)
+
+mysql>
